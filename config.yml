@@ -29,6 +29,8 @@ steps:
           - type: respond
             issue: 1
             with: feedback-success.md
+            data:
+              thePayload: '{{ payload }}'
       - type: respond
         issue: 1
         with: feedback-fail.md

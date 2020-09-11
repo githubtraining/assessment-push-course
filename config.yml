@@ -5,12 +5,30 @@ template:
   name: assessment-push
 before:
   - type: createIssue
-    title: Welcome!
-    body: new-issue.md
+    title: Feedback
+    body: feedback-placeholder.md
 steps:
-  - title: First step
-    description: The first step in your course
-    event: issues.assigned
+  - title: Push to GitHub
+    description: Make a commit to this repository using any tool you wish except GitHub itself. Push that commit to this repository.
+    event: push
     link: '{{ repoUrl }}'
     actions:
-      - type: closeIssue
+      - type: gate
+        every: true
+        gates: 
+        - left: '{{ payload.commits.committer.name }}'
+          operator: ===
+          right: GitHub
+        - left: '{{ payload.commits.committer.email }}'
+          operator: ===
+          right: noreply@github.com
+        - left: '{{ payload.commits.committer.username }}'
+          operator: ===
+          right: web-flow
+        else:
+          - type: respond
+            issue: 1
+            with: feedback-success.md
+      - type: respond
+        issue: 1
+        with: feedback-fail.md

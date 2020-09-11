@@ -14,17 +14,21 @@ steps:
     link: '{{ repoUrl }}'
     actions:
       - type: gate
+        left: '{{ payload.commits.0.committer.username }}'
+        operator: '!=='
+        right: 'hectorsector'
+      - type: gate
         every: true
         gates: 
-        - left: '{{ payload.commits.committer.name }}'
+        - left: '{{ payload.commits.0.committer.name }}'
           operator: ===
-          right: GitHub
-        - left: '{{ payload.commits.committer.email }}'
+          right: 'GitHub'
+        - left: '{{ payload.commits.0.committer.email }}'
           operator: ===
-          right: noreply@github.com
-        - left: '{{ payload.commits.committer.username }}'
+          right: 'noreply@github.com'
+        - left: '{{ payload.commits.0.committer.username }}'
           operator: ===
-          right: web-flow
+          right: 'web-flow'
         else:
           - type: respond
             issue: 1
